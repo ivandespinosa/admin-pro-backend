@@ -68,7 +68,6 @@ const crearUsuario = async (req, res) => {
 const actualizarUsuario = async (req, res = response) => {
 
     // TODO: Validar token y comprobar si es el usuario correcto
-
     const uid = req.params.id;
 
     try {
@@ -93,6 +92,15 @@ const actualizarUsuario = async (req, res = response) => {
                     msg: "Ya existe un usuario con ese Email"
                 });
             }
+        }
+
+        if ( !usuarioDB.google ) {
+            campos.email = email;
+        } else if ( usuarioDB.email !== email ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Usuario de google no pueden cambiar su email'
+            });
         }
 
         campos.email = email;
